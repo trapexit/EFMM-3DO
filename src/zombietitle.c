@@ -622,7 +622,6 @@ ccbtodispccb (uint32 dispccbn, uint32 ccbn)
   (dispccbs[dispccbn]->ccb_Flags) &= ~CCB_LAST;
 }
 
-
 void
 loadbackground (const char *backname)
 {
