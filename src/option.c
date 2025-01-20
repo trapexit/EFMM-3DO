@@ -1,7 +1,7 @@
 /*  :ts=8 bk=0
  *
  * option.c Really should be called something like "scoresave.c".
- * 			Does high score and save game and load game including NVRAM file manipulation.
+ * Does high score and save game and load game including NVRAM file manipulation.
  */
 #include <types.h>
 #include <operamath.h>
