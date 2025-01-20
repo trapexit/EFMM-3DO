@@ -1105,7 +1105,7 @@ LoadSaveInfo( struct SaveInfoRec *theInfo )
 
   err = ReadDiskFile( fileItem, (ubyte *) theInfo, sizeof( SaveInfoRec ) );
 
-  err = CloseDiskFile( fileItem );
+  //err = CloseDiskFile( fileItem );
 
   return err;
 }
@@ -1131,7 +1131,7 @@ WriteSaveInfo( struct SaveInfoRec *theInfo, char *savmsg )
 
   err = WriteDiskFile( fileItem, (ubyte *) theInfo, sizeof( SaveInfoRec ) );
 
-  err = CloseDiskFile( fileItem );
+  //err = CloseDiskFile( fileItem );
 
   if (err < 0)
     rendermessage (240, "There was\nan error.\nData not\nsaved.");
