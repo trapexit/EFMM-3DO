@@ -4,8 +4,8 @@
  *
  * Leo L. Schwab					9309.12
  */
-#include <types.h>
-#include <graphics.h>
+#include "types.h"
+#include "graphics.h"
 
 #include "castle.h"
 #include "imgfile.h"
