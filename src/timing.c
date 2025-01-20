@@ -4,11 +4,11 @@
  *
  * Leo L. Schwab					9305.07
  */
-#include <types.h>
-#include <io.h>
-#include <kernelnodes.h>
-#include <graphics.h>
-#include <time.h>
+#include "types.h"
+#include "io.h"
+#include "kernelnodes.h"
+#include "graphics.h"
+#include "time.h"
 
 #include "castle.h"
 
