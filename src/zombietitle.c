@@ -13,28 +13,28 @@
 \***************************************************************/
 #define SOUNDSTUFF
 
-#include <types.h>
-#include <ctype.h>
+#include "types.h"
+#include "ctype.h"
 
-#include <kernel.h>
-#include <kernelnodes.h>
-#include <mem.h>
-#include <io.h>
-#include <graphics.h>
-#include <operamath.h>
-#include <event.h>
-#include <time.h>
-#include <Form3DO.h>
-#include <strings.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <debug.h>
+#include "kernel.h"
+#include "kernelnodes.h"
+#include "mem.h"
+#include "io.h"
+#include "graphics.h"
+#include "operamath.h"
+#include "event.h"
+#include "time.h"
+#include "Form3DO.h"
+#include "strings.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "debug.h"
 
 // Sound Includes
-#include <operror.h>
-#include <filefunctions.h>
-#include <audio.h>
-#include <soundfile.h>
+#include "operror.h"
+#include "filefunctions.h"
+#include "audio.h"
+#include "soundfile.h"
 
 
 #include "castle.h"
