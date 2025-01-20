@@ -484,7 +484,7 @@ void
 loadcel (const char *spname,
          int32 index)
 {
-  ubyte fname[80];
+  char fname[80];
   int32 celbufsize, *celbuffer, *p;
 
 
