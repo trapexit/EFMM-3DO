@@ -70,7 +70,8 @@ loadlevelmap (char *filename)
   int32		numobs;
   {
     register int	x, z, len;
-    register uint8	c, *cp;
+    register uint8	c;
+    register char *cp;
     ObDef		*od;
     int32		err_len;
     int		eol;
