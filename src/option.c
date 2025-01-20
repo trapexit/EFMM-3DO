@@ -13,7 +13,6 @@
 #include "stdio.h"
 #include "io.h"
 #include "filesystem.h"
-#include "time.h"
 
 #include "castle.h"
 #include "objects.h"
