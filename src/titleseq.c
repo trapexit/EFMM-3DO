@@ -71,6 +71,8 @@ dotitle ()
 
   freecelarray (ca_logo);
 
+  return FC_NOP;
+  
   /*
    * Play CinePak intro.
    */
