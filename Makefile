@@ -59,7 +59,7 @@ LIBS =						\
 	$(LIBPATH)/3do/input.lib		\
 	$(LIBPATH)/3do/international.lib	\
 	$(LIBPATH)/3do/intmath.lib		\
-	$(LIBPATH)/3do/lib3do.lib		\
+	$(LIBPATH)/3dosdk/1p3/lib3do.lib		\
 	$(LIBPATH)/3do/music.lib		\
 	$(LIBPATH)/3do/mvelib.lib		\
 	$(LIBPATH)/3do/operamath.lib		\
@@ -100,7 +100,7 @@ endif
 
 builddir: build/.touched
 
-objs: builddir $(OBJS)
+objs: builddir $(OBJS) src/font.co src/font.so
 
 $(LAUNCHME): objs
 	armlink -o $@ $(LDFLAGS) $(STARTUP) $(LIBS) $(OBJS)

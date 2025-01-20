@@ -1086,7 +1086,8 @@ LoadSaveInfo( struct SaveInfoRec *theInfo )
   Item 	fileItem;
   Err		err = 0;
 
-  fileItem = OpenDiskFile( saveInfoFileName );
+  //  fileItem = OpenDiskFile( saveInfoFileName );
+  fileItem = -1;
   if ( fileItem < 0 )
     {
       err = CreateOpenSaveInfoFile( saveInfoFileName, &fileItem );
