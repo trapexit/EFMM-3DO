@@ -67,9 +67,10 @@ static IOReq	*timerioreq;
  * Code.
  */
 void
-drawnumxy (bmi, num, x, y)
-     Item	bmi;
-     int32	num, x, y;
+drawnumxy(Item bmi,
+          int32 num,
+          int32 x,
+          int32 y)
 {
   GrafCon	gc;
   char	str[64];
