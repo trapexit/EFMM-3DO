@@ -1155,7 +1155,8 @@ CreateOpenSaveInfoFile( char *fileName, Item *fileItem )
   Item ioReqItem;
   uint32 numberOfBlocks, blockSize;
 
-  *fileItem = CreateFile( fileName );
+  //*fileItem = CreateFile( fileName );
+  *fileItem = -1;
   CHECKRESULT( "CreateNVRAMFILE:Create File", *fileItem );
   err = ( *fileItem < 0 ) ? *fileItem : 0;
 
