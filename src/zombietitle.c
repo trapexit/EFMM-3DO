@@ -24,7 +24,7 @@
 #include "operamath.h"
 #include "event.h"
 #include "time.h"
-#include "Form3DO.h"
+#include "form3do.h"
 #include "strings.h"
 #include "stdlib.h"
 #include "stdio.h"
