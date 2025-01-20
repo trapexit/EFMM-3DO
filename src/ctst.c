@@ -2335,7 +2335,7 @@ openstuff ()
 
 	opentimer ();
 	initsound ();
-	initstreaming ();
+	//initstreaming ();
 	openmmfont ();
 
 	loadlevelsequence ();
