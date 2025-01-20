@@ -1121,7 +1121,8 @@ WriteSaveInfo( struct SaveInfoRec *theInfo, char *savmsg )
   Item 	fileItem;
   Err		err = 0;
 
-  fileItem = OpenDiskFile( saveInfoFileName );
+  //fileItem = OpenDiskFile( saveInfoFileName );
+  fileItem = -1;
   if ( fileItem < 0 )
     {
       printf( "failed to open");
