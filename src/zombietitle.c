@@ -624,9 +624,9 @@ ccbtodispccb (uint32 dispccbn, uint32 ccbn)
 
 
 void
-loadbackground (ubyte *backname)
+loadbackground (const char *backname)
 {
-  ubyte fname[80];
+  char fname[80];
   int32 bufsize, *buffer, *p;
   ImageCC *icc;
   PixelChunk *pxlc;
