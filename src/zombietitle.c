@@ -481,7 +481,7 @@ play (void)
 
 
 void
-loadcel (ubyte *spname, int32 index)
+loadcel (const char *spname, int32 index)
 {
   ubyte fname[80];
   int32 celbufsize, *celbuffer, *p;
