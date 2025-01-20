@@ -77,7 +77,7 @@ drawnumxy(Item  bmi,
 
   sprintf (str, "%ld", num);
   MoveTo (&gc, x, y);
-  DrawText8 (&gc, bmi, str);
+  DrawText8 (&gc, bmi, (const u8*)&str[0]);
 }
 
 
