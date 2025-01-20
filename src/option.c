@@ -11,6 +11,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "stdio.h"
+#include "io.h"
 
 #include "castle.h"
 #include "objects.h"
