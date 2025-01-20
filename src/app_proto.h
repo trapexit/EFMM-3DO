@@ -105,7 +105,7 @@ void initclip(void);
 int loadlevelmap(char *filename);
 void dropfaces(void);
 void freelevelmap(void);
-char *snarfstr(char *s, char *dest, char *terminators);
+//char *snarfstr(char *s, char *dest, char *terminators);
 /* leveldef.c */
 /* genmessage.c */
 void initfont(void);
