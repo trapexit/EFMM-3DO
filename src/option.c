@@ -3,11 +3,11 @@
  * option.c Really should be called something like "scoresave.c".
  * Does high score and save game and load game including NVRAM file manipulation.
  */
-#include <types.h>
-#include <operamath.h>
-#include <event.h>
-#include <mem.h>
-#include <graphics.h>
+#include "types.h"
+#include "operamath.h"
+#include "event.h"
+#include "mem.h"
+#include "graphics.h"
 #include "stdlib.h"
 #include "string.h"
 #include "stdio.h"
