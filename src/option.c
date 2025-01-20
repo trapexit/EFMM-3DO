@@ -1161,7 +1161,8 @@ CreateOpenSaveInfoFile( char *fileName, Item *fileItem )
 
   if ( err == 0 )
     {
-      *fileItem = OpenDiskFile( fileName );
+      //*fileItem = OpenDiskFile( fileName );
+      *fileItem = -1;
       CHECKRESULT( "CreateBVRANFUKELOpenDiskFile", *fileItem );
       err = ( *fileItem < 0 ) ? *fileItem : 0;
 
