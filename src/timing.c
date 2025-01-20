@@ -67,7 +67,7 @@ static IOReq	*timerioreq;
  * Code.
  */
 void
-drawnumxy(Item bmi,
+drawnumxy(Item  bmi,
           int32 num,
           int32 x,
           int32 y)
