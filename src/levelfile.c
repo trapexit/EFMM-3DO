@@ -43,6 +43,27 @@ static char	commaspace[] = ", ";
 /***************************************************************************
  * Code.
  */
+
+static
+char *
+snarfstr(register char *s,
+         register char *dest,
+         char          *terminators)
+{
+  register char	c;
+
+  while (isspace (*s))
+    s++;
+
+  while (c = *dest++ = *s++)
+    if (strchr (terminators, c))
+      break;
+
+  *--dest = '\0';
+
+  return (s);
+}
+
 int
 loadlevelmap (filename)
      char	*filename;
@@ -268,21 +289,3 @@ freelevelmap ()
 }
 
 
-char *
-snarfstr(register char *s,
-         register char *dest,
-         char          *terminators)
-{
-  register char	c;
-
-  while (isspace (*s))
-    s++;
-
-  while (c = *dest++ = *s++)
-    if (strchr (terminators, c))
-      break;
-
-  *--dest = '\0';
-
-  return (s);
-}
