@@ -73,7 +73,7 @@
 void opentitlestuff (void);
 void closetitlestuff (void);
 void loadcel (const char *spname, int32 index);
-void loadbackground (ubyte *backname);
+void loadbackground (const char *backname);
 void ccbtodispccb (uint32 ccbn, uint32 dispccbn);
 
 void ClearScreen (void);
