@@ -12,6 +12,7 @@
 #include "string.h"
 #include "stdio.h"
 #include "io.h"
+#include "filesystem.h"
 
 #include "castle.h"
 #include "objects.h"
