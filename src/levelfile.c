@@ -65,8 +65,7 @@ snarfstr(register char *s,
 }
 
 int
-loadlevelmap (filename)
-     char	*filename;
+loadlevelmap (char *filename)
 {
   int32		numobs;
   {
