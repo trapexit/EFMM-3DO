@@ -10,6 +10,7 @@
 #include "time.h"
 #include "event.h"
 #include "graphics.h"
+#include "time.h"
 
 #include "castle.h"
 
