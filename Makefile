@@ -1,128 +1,158 @@
-# :ts=8 bk=0
-#
-# Makefile for CastleHopper.  Intended for use on a Sun workstation.
-#
-# Leo L. Schwab						9305.12
-############################################################################
-# Copyright (c) 1993 New Technologies Group, Inc.
-#
-# This document is proprietary and confidential.  Divulge it and DIE.
-############################################################################
-#
-.SUFFIXES:	.c .asm .o
+NAME       = efmm
+ISONAME    = iso/$(NAME).iso
+FILESYSTEM = takeme
+LAUNCHME   = $(FILESYSTEM)/LaunchMe
+STACKSIZE  = 4096
+BANNER	   = banner.png
 
-CASTLE_CO =	ctst.o rend.o shoot.o objects.o ob_zombie.o ob_george.o \
-		ob_head.o ob_spider.o ob_powerup.o ob_exit.o ob_trigger.o \
-		clip.o levelfile.o leveldef.o genmessage.o statscreen.o \
-		thread.o titleseq.o imgfile.o loadloaf.o file.o timing.o \
-		sound.o soundinterface.o cinepak.o map.o option.o \
-		elkabong.o
-FONT_O =	font.co font.so
-CASTLE_AO =	misc.o project.o
-CASTLE_O =	$(CASTLE_CO) $(CASTLE_AO)
+## Flag definitions ##
+# -bigend   : Compiles code for an ARM operating with big-endian memory. The most
+#             significant byte has lowest address.
+# -za1      : LDR may only access word-aligned addresses.
+# -zi4      : The compiler selects a value for the maximum number of instructions
+#             allowed to generate an integer literal inline before using LDR rx,=value
+# -fa       : Checks for certain types of data flow anomalies.
+# -fh       : Checks "all external objects are declared before use",
+#             "all file-scoped static objects are used",
+#             "all predeclarations of static functions are used between
+#              their declaration and their definition".
+# -fx       : Enables all warnings that are suppressed by default.
+# -fpu none : No FPU. Use software floating point library.
+# -arch 3   : Compile using ARM3 architecture.
+# -apcs     : See page 1-13 of ARM SDT Ref Guide
+#             The default procedure call standard for the ARM compiler in SDT 2.11a was
+#             -apcs 3/32/fp/swst/wide/softfp.
+#             The default Procedure Call Standard (PCS) for the ARM compiler, and
+#             the assembler in SDT 2.50 and C++ 1.10 is now:
+#             -apcs 3/32/nofp/noswst/narrow/softfp
+ifeq ($(DEBUG),1)
+OPT      = -O0
+DEFFLAGS = -DDEBUG=1
+else
+OPT      = -O2
+DEFFLAGS = -DNDEBUG=1
+endif
 
+INCPATH  = ${TDO_DEVKIT_PATH}/include
+INCFLAGS = -I$(INCPATH)/3do -I$(INCPATH)/community -I$(INCPATH)/ttl
+CFLAGS   = $(OPT) -bigend -za1 -zi4 -fa -fh -fx -fpu none -arch 3 -apcs "3/32/fp/swst/wide/softfp"
+CXXFLAGS = $(CFLAGS)
+ASFLAGS  = -bigend -fpu none -arch 3 -apcs "3/32/fp/swst"
+LIBPATH  = ${TDO_DEVKIT_PATH}/lib
+LDFLAGS  = -match 0x1 -nodebug -noscanlib -nozeropad -verbose -remove -aif -reloc -dupok -ro-base 0
+STARTUP  = $(LIBPATH)/3do/cstartup.o
 
-# UPDATE =	/other/opera/dragontail6
-# LIB =		$(UPDATE)/developer/libs
-# INCLUDES =	-I$(UPDATE)/includes -I$(DSSUPPORT)
-# DSSUPPORT =	dssupport
-UPDATE =	$(HOME)/hackery/3do-devkit
-LIB =		$(UPDATE)/lib/3do
-CINCLUDES =	-J$(UPDATE)/include/3dosdk/1p3 -I$(DSSUPPORT)
-ASMINCLUDES =	-I$(UPDATE)/include/3dosdk/1p3
-DSSUPPORT =	dssupport
-
-# Improved music.lib fetched locally for 9311.11 build.
-LIBS =		$(DSSUPPORT)/Subscriber.lib \
-		$(LIB)/lib3do.lib $(LIB)/graphics.lib $(LIB)/filesystem.lib \
-		$(LIB)/input.lib $(LIB)/audio.lib music.lib \
-		$(LIB)/clib.lib $(LIB)/swi.lib $(LIB)/operamath.lib \
-		$(DSSUPPORT)/DataAcq.lib $(DSSUPPORT)/DS.lib \
-		$(DSSUPPORT)/codec.lib
-
-BIN =		$(UPDATE)/bin/compiler/linux
-STARTUP =	$(LIB)/cstartup.o
-COMPILE =	$(BIN)/armcc
-ASSEMBLE =	$(BIN)/armasm
-LINK =		$(BIN)/armlink
-MAKELIB =	$(BIN)/armlib
-
-COPTS = -Wanp -c $(CINCLUDES) -bigend -fc -zps0 -za1
-SOPTS = -PD '|_LITTLE_END_| SETL {FALSE};' $(ASMINCLUDES) -bigend -Apcs 3/32bit
-LOPTS = -AIF -B 0x00 -R
-
-
-############################################################################
-# Rules for building files.
-#
-.c.o:
-	$(COMPILE) $(COPTS) -o $@ $*.c
-
-.asm.o:
-	$(ASSEMBLE) $(SOPTS) -o $@ $*.asm
-
-
-############################################################################
-# Application builder.
-#
-all: ctst
-	@echo "Nice software!"
-
-##ctst: $(STARTUP) $(LIBS) $(CASTLE_O) $(FONT_O)
-##	$(LINK) $(LOPTS) -Debug -S $@.catsym -o $@.dbg $(STARTUP) $(CASTLE_O) $(FONT_O) $(LIBS)
-##	stripaif $@.dbg -o $@ -s $@.sym
-##	modbin > /dev/null $@ -stack 4096 -debug
-##	modbin > /dev/null $@.dbg -stack 4096 -debug
-
-
-ctst: $(LIBS) $(CASTLE_O) $(FONT_O)
-	$(LINK) $(LOPTS) -S $@.catsym -o $@ -libpath $(LIB) -noscanlib -verbose $(STARTUP) $(CASTLE_O) $(FONT_O) $(LIBS)
-	modbin > /dev/null $@ --stack 10240
+LIBS =						\
+	$(LIBPATH)/3do/3dlib.lib		\
+	$(LIBPATH)/3do/audio.lib		\
+	$(LIBPATH)/3do/clib.lib			\
+	$(LIBPATH)/3do/codec.lib		\
+	$(LIBPATH)/3do/compression.lib		\
+	$(LIBPATH)/3do/cpluslib.lib		\
+	$(LIBPATH)/3do/DataAcq.lib		\
+	$(LIBPATH)/3do/DataAcqShuttle.lib	\
+	$(LIBPATH)/3do/DS.lib			\
+	$(LIBPATH)/3do/DSShuttle.lib		\
+	$(LIBPATH)/3do/exampleslib.lib		\
+	$(LIBPATH)/3do/filesystem.lib		\
+	$(LIBPATH)/3do/graphics.lib		\
+	$(LIBPATH)/3do/input.lib		\
+	$(LIBPATH)/3do/international.lib	\
+	$(LIBPATH)/3do/intmath.lib		\
+	$(LIBPATH)/3do/lib3do.lib		\
+	$(LIBPATH)/3do/music.lib		\
+	$(LIBPATH)/3do/mvelib.lib		\
+	$(LIBPATH)/3do/operamath.lib		\
+	$(LIBPATH)/3do/pgl.lib			\
+	$(LIBPATH)/3do/string.lib		\
+	$(LIBPATH)/3do/Subscriber.lib		\
+	$(LIBPATH)/3do/swi.lib			\
+	$(LIBPATH)/community/cpplib.lib		\
+	$(LIBPATH)/community/example_folio.lib	\
+	$(LIBPATH)/community/svc_funcs.lib      \
+	$(LIBPATH)/community/svc_mem.lib        \
+#	$(LIBPATH)/3do/burger.lib		\
+#	$(LIBPATH)/3do/jstring.lib		\
+#	$(LIBPATH)/3do/memdebug.lib		\
+#	$(LIBPATH)/3do/obsoletelib3do.lib	\
 
 
-############################################################################
-# Automagic prototype generator.
-#
-proto:
-	cproto $(INCLUDES) $(CASTLE_CO:.o=.c) | sed -e "s/register //g" > app_proto.h
+SRCS_S   = $(wildcard src/*.s)
+SRCS_C   = $(wildcard src/*.c)
+SRCS_CXX = $(wildcard src/*.cpp)
 
+OBJS += $(SRCS_S:src/%.s=build/%.s.o)
+OBJS += $(SRCS_C:src/%.c=build/%.c.o)
+OBJS += $(SRCS_CXX:src/%.cpp=build/%.cpp.o)
 
-############################################################################
-# Include dependencies.
-#
-ctst.o:			castle.h objects.h imgfile.h loaf.h sound.h flow.h \
-			app_proto.h
-levelfile.o:		castle.h objects.h app_proto.h
-timing.o:		castle.h app_proto.h
-imgfile.o:		castle.h imgfile.h app_proto.h
-rend.o:			castle.h imgfile.h loaf.h anim.h app_proto.h
-textstuff.o:		castle.h objects.h imgfile.h loaf.h textstuff.h \
-			app_proto.h
-clip.o:			castle.h app_proto.h
-shoot.o:		castle.h objects.h imgfile.h sound.h app_proto.h
-objects.o:		castle.h objects.h anim.h imgfile.h sound.h \
-			app_proto.h
-loadloaf.o:		castle.h loaf.h app_proto.h
-ob_zombie.o:		castle.h objects.h anim.h imgfile.h sound.h \
-			app_proto.h
-leveldef.o:		castle.h objects.h
-zombietitle.o:		castle.h app_proto.h
-sound.o:		castle.h sound.h soundinterface.h app_proto.h
-thread.o:		castle.h app_proto.h
-genmessage.o:		castle.h objects.h imgfile.h app_proto.h font.h
-ob_exit.o:		castle.h objects.h app_proto.h
-ob_powerup.o:		castle.h objects.h loaf.h anim.h sound.h \
-			ob_powerup.h app_proto.h
-soundinterface.o:	soundinterface.h
-map.o:			castle.h objects.h imgfile.h ob_powerup.h \
-			app_proto.h
-titleseq.o:		castle.h imgfile.h flow.h app_proto.h
-ob_trigger.o:		castle.h objects.h sound.h app_proto.h
-ob_head.o:		castle.h objects.h anim.h imgfile.h app_proto.h
-ob_george.o:		castle.h objects.h anim.h imgfile.h app_proto.h
-ob_spider.o:		castle.h objects.h anim.h imgfile.h app_proto.h
-statscreen.o:		castle.h objects.h imgfile.h font.h sound.h flow.h \
-			option.h app_proto.h
-cinepak.o:		castle.h app_proto.h
-option.o:		castle.h objects.h imgfile.h font.h option.h \
-			app_proto.h
+DEPS = $(OBJS:.o=.d)
+
+all: launchme modbin iso encrypt-iso
+
+build/.touched:
+ifeq ($(OS),Windows_NT)
+	if not exist "build" mkdir "build"
+	type nul > $@
+else
+	mkdir -p "build"
+	touch $@
+endif
+
+builddir: build/.touched
+
+objs: builddir $(OBJS)
+
+$(LAUNCHME): objs
+	armlink -o $@ $(LDFLAGS) $(STARTUP) $(LIBS) $(OBJS)
+
+launchme: $(LAUNCHME)
+
+modbin:
+	modbin --name="$(NAME)" --time --stack=$(STACKSIZE) "$(LAUNCHME)" "$(LAUNCHME)"
+
+banner:
+	3it to-banner -o "$(FILESYSTEM)/BannerScreen" "$(BANNER)"
+
+iso/.touched:
+ifeq ($(OS),Windows_NT)
+	if not exist "iso" mkdir "iso"
+	type nul > $@
+else
+	mkdir -p "iso"
+	touch $@
+endif
+
+isodir: iso/.touched
+
+iso: isodir
+	3doiso -in "$(FILESYSTEM)" -out "$(ISONAME)"
+
+encrypt-iso: $(ISONAME)
+	3DOEncrypt genromtags "$(ISONAME)"
+
+build/%.s.o: src/%.s
+	armasm $(INCFLAGS) $(ASFLAGS) $< -o $@
+
+build/%.c.o: src/%.c
+	armcc $(INCFLAGS) $(DEFFLAGS) $(CFLAGS) -M $< -o $@ > ${@:.o=.d}
+	armcc $(INCFLAGS) $(DEFFLAGS) $(CFLAGS) -c $< -o $@
+
+build/%.cpp.o: src/%.cpp
+	armcpp $(INCFLAGS) $(DEFFLAGS) $(CXXFLAGS) -M $< -o $@ > ${@:.o=.d}
+	armcpp $(INCFLAGS) $(DEFFLAGS) $(CXXFLAGS) -c $< -o $@
+
+clean:
+ifeq ($(OS),Windows_NT)
+	if exist "build" rmdir /S /Q "build"
+	if exist "iso" rmdir /S /Q "iso"
+	if exist $(subst /,\,$(LAUNCHME)) del $(subst /,\,$(LAUNCHME))
+else
+	rm -rvf "build" "iso" $(LAUNCHME)
+endif
+
+run:
+	run-iso "$(ISONAME)"
+
+.PHONY: builddir isodir clean modbin banner iso encrypt-iso run
+
+-include $(DEPS)
